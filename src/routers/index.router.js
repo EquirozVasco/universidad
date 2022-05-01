@@ -10,6 +10,7 @@ const vrs = '/api/v1';
 router.get(vrs + '/carreras', carreras_controller.consultarCarreras);
 router.get(vrs + '/carreras/:id', carreras_controller.consultarCarrera);
 router.put(vrs + '/carreras/:id', carreras_controller.actualizarCarrera);
+router.delete(vrs + '/carreras/:id', carreras_controller.eliminarCarrera);
 router.post(vrs + '/carreras', carreras_controller.crearCarrera);
 
 module.exports = router;

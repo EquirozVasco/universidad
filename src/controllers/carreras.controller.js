@@ -42,7 +42,7 @@ const consultarCarrera = async (req, res) => {
     try {
         respuesta.ok = true;
         respuesta.message = "Carrera consultada exitosamente";
-        const resultado = await Carrera.findOne({_id: req.params.id});
+        const resultado = await Carrera.findOne({ _id: req.params.id });
         console.log(resultado);
         respuesta.info = resultado;
         res.send(respuesta);
@@ -53,6 +53,24 @@ const consultarCarrera = async (req, res) => {
         res.status(500).send(respuesta);
     }
 }
+
+const eliminarCarrera = async (req, res) => {
+    let respuesta = {}
+    try {
+        respuesta.ok = true;
+        respuesta.message = "Carrera eliminada exitosamente";
+        const resultado = await Carrera.findOneAndUpdate(req.params.id, { activo: false });
+        console.log(resultado);
+        respuesta.info = resultado;
+        res.send(respuesta);
+    } catch (error) {
+        respuesta.ok = false;
+        respuesta.message = "Ha ocurrido eliminando la carrera";
+        respuesta.info = error;
+        res.status(500).send(respuesta);
+    }
+}
+
 
 const actualizarCarrera = async (req, res) => {
     let respuesta = {}
@@ -72,4 +90,4 @@ const actualizarCarrera = async (req, res) => {
     }
 }
 
-module.exports = { crearCarrera, consultarCarreras, actualizarCarrera, consultarCarrera}
+module.exports = { crearCarrera, consultarCarreras, actualizarCarrera, consultarCarrera, eliminarCarrera }
