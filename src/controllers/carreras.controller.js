@@ -59,7 +59,7 @@ const eliminarCarrera = async (req, res) => {
     try {
         respuesta.ok = true;
         respuesta.message = "Carrera eliminada exitosamente";
-        const resultado = await Carrera.findOneAndUpdate(req.params.id, { activo: false });
+        const resultado = await Carrera.findByIdAndUpdate(req.params.id, { activo: false });
         console.log(resultado);
         respuesta.info = resultado;
         res.send(respuesta);
@@ -76,9 +76,10 @@ const actualizarCarrera = async (req, res) => {
     let respuesta = {}
     const { nombre, descripcion } = req.body;
     try {
+        console.log(req.params.id);
         respuesta.ok = true;
         respuesta.message = "Carrera actualizada exitosamente";
-        const resultado = await Carrera.findOneAndUpdate(req.params.id, { nombre, descripcion });
+        let resultado = await Carrera.findOneAndUpdate({_id:req.params.id}, { nombre, descripcion });
         console.log(resultado);
         respuesta.info = resultado;
         res.send(respuesta);
