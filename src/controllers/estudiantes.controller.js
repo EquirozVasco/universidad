@@ -52,4 +52,21 @@ const consultarEstudiantes = async(req, res) => {
     }
 }
 
-module.exports = { crearEstudiante, consultarEstudiantes }
+const eliminarEstudiante = async (req, res) => {
+    let respuesta = {}
+    try {
+        respuesta.ok = true;
+        respuesta.message = "Estudiante eliminado exitosamente";
+        const resultado = await Estudiantes.findByIdAndUpdate(req.params.id, { activo: false });
+        console.log(resultado);
+        respuesta.info = resultado;
+        res.send(respuesta);
+    } catch (error) {
+        respuesta.ok = false;
+        respuesta.message = "Ha ocurrido un error eliminando el estudiante";
+        respuesta.info = error;
+        res.status(500).send(respuesta);
+    }
+}
+
+module.exports = { crearEstudiante, consultarEstudiantes, eliminarEstudiante }
