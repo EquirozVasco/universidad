@@ -60,6 +60,37 @@ const consultarEstudiantes = async(req, res) => {
     }
 }
 
+const getAge = (fechaFinal) => {
+    let fechaHoy = new Date();
+    let fechaNto = new Date(fechaFinal);
+    let edad = fechaHoy.getFullYear() - fechaNto.getFullYear();
+    let difMeses = fechaHoy.getMonth() - fechaNto.getMonth();
+    if (difMeses < 0 || (difMeses === 0 && fechaHoy.getDate() < fechaNto.getDate())) {
+        edad--;
+    }
+    return edad;
+}
+
+const consultarEstudiante = async (req, res) => {
+    let respuesta = {}
+    try {
+        respuesta.ok = true;
+        respuesta.message = "Estudiantes consultados exitosamente";
+        let resultado = await Estudiantes.findOne({ _id: req.params.id });
+        const info = { ...resultado._doc }
+        info.__v = undefined
+        info.edad = getAge(resultado.fecha_de_nacimiento)
+        respuesta.info = info;
+        res.send(respuesta);
+    } catch (error) {
+        console.log(error);
+        respuesta.ok = false;
+        respuesta.message = "Ha ocurrido un error consultando los estudiantes";
+        respuesta.info = error;
+        res.status(500).send(respuesta);
+    }
+}
+
 const eliminarEstudiante = async (req, res) => {
     let respuesta = {}
     try {
@@ -77,5 +108,5 @@ const eliminarEstudiante = async (req, res) => {
     }
 }
 
-module.exports = { crearEstudiante, consultarEstudiantes, eliminarEstudiante }
+module.exports = { crearEstudiante, consultarEstudiantes, eliminarEstudiante, consultarEstudiante }
 
