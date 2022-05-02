@@ -5,7 +5,7 @@ const consultarCarreras = async (req, res) => {
     try {
         respuesta.ok = true;
         respuesta.message = "Carreras consultadas exitosamente";
-        const resultado = await Carrera.find({ activo: true });
+        let resultado = await Carrera.find({ activo: true });
         console.log(resultado);
         respuesta.info = resultado;
         res.send(respuesta);
