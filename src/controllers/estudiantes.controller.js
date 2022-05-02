@@ -35,13 +35,21 @@ const crearEstudiante = async (req, res) => {
 }
 
 const consultarEstudiantes = async(req, res) => {
-    let respuesta = {}
+  let respuesta = {}
     try {
         respuesta.ok = true;
         respuesta.message = "Estudiantes consultados exitosamente";
         let resultado = await Estudiantes.find({ activo: true });
+        console.log(`CONSULTAR ESTUDIANTES: ${resultado}`);
+        const info = resultado.map((estudiante) => {
+            console.log(`ESTUDIANTE: ${estudiante}`);
+            const info = { ...estudiante._doc }
+            info.__v = undefined
+            info.edad = getAge(estudiante.fecha_de_nacimiento)
+            return info
+        })
         console.log(resultado);
-        respuesta.info = resultado;
+        respuesta.info = info;
         res.send(respuesta);
     } catch (error) {
         console.log(error);
@@ -70,3 +78,4 @@ const eliminarEstudiante = async (req, res) => {
 }
 
 module.exports = { crearEstudiante, consultarEstudiantes, eliminarEstudiante }
+
