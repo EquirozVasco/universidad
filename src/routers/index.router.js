@@ -17,6 +17,7 @@ router.post(vrs + '/carreras', carreras_controller.crearCarrera);
 //estudiantes
 router.post(vrs + '/estudiantes', estudiantes_controller.crearEstudiante);
 router.get(vrs + '/estudiantes', estudiantes_controller.consultarEstudiantes);
+router.get(vrs + '/estudiantes/:id', estudiantes_controller.consultarEstudiante);
 router.delete(vrs + '/estudiantes/:id', estudiantes_controller.eliminarEstudiante);
 
 module.exports = router;
