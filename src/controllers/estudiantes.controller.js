@@ -108,5 +108,35 @@ const eliminarEstudiante = async (req, res) => {
     }
 }
 
-module.exports = { crearEstudiante, consultarEstudiantes, eliminarEstudiante, consultarEstudiante }
+const actualizarEstudiante = async (req, res) => {
+    let respuesta = {};
+    try {
+        let { nombre_1, nombre_2, apellido_1, apellido_2, carrera } = req.body;
+        let resultado = await Carrera.findOne({ nombre: carrera });
+        if (resultado != null) {
+            if (resultado.activo == true) {
+                respuesta.ok = true;
+                respuesta.message = "Estudiante modificado exitosamente";
+                resultado = await Estudiantes.findOneAndUpdate({ _id: req.params.id }, { nombre_1, nombre_2, apellido_1, apellido_2, carrera });
+                console.log(resultado);
+                respuesta.info = resultado;
+                res.send(respuesta);
+            } else {
+                console.log('Carrera inactiva.');
+                respuesta.info = 'Carrera inactiva';
+                res.send(respuesta);
+            }
+        } else {
+            console.log('Carrera inexistente');
+            respuesta.info = 'Carrera inexistente';
+            res.send(respuesta);
+        }
+    } catch (error) {
+        respuesta.ok = false;
+        respuesta.message = "Ha ocurrido un error modificando el estudiante";
+        respuesta.info = error;
+        res.status(500).send(respuesta);
+    }
+}
 
+module.exports = { crearEstudiante, consultarEstudiantes, eliminarEstudiante, consultarEstudiante, actualizarEstudiante }
