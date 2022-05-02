@@ -34,4 +34,22 @@ const crearEstudiante = async (req, res) => {
     }
 }
 
-module.exports = { crearEstudiante }
+const consultarEstudiantes = async(req, res) => {
+    let respuesta = {}
+    try {
+        respuesta.ok = true;
+        respuesta.message = "Estudiantes consultados exitosamente";
+        let resultado = await Estudiantes.find({ activo: true });
+        console.log(resultado);
+        respuesta.info = resultado;
+        res.send(respuesta);
+    } catch (error) {
+        console.log(error);
+        respuesta.ok = false;
+        respuesta.message = "Ha ocurrido un error consultando los estudiantes";
+        respuesta.info = error;
+        res.status(500).send(respuesta);
+    }
+}
+
+module.exports = { crearEstudiante, consultarEstudiantes }
